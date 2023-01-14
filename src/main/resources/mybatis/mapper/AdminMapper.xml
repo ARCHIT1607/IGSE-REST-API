@@ -1,0 +1,99 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.iGSE.mapper.AdminMapper">
+
+	<resultMap id="MeterResultMap" type="Meter">
+		<id column="id" property="id" />
+		<result column="e_meter_price_day" property="eMeterPriceDay" />
+		<result column="e_meter_price_night"
+			property="eMeterPriceNight" />
+		<result column="g_meter_price" property="gMeterPrice" />
+		<result column="submission_date" property="submissionDate" />
+		<result column="standing_charge" property="standingCharge" />
+		<result column="is_active" property="isActive" />
+
+	</resultMap>
+
+	<resultMap id="MeterReadingResultMap" type="MeterReading">
+		<id column="id" property="id" />
+		<result column="e_meter_reading_day"
+			property="eMeterReadingDay" />
+		<result column="e_meter_reading_night"
+			property="eMeterReadingNight" />
+		<result column="g_meter_reading" property="gMeterReading" />
+		<result column="submission_date" property="submissionDate" />
+
+	</resultMap>
+	
+	<resultMap id="BillResultMap" type="Bill">
+		<id column="id" property="id" />
+		<result column="email" property="email" />
+		<result column="e_meter_reading_day" property="eMeterReadingDay" />
+		<result column="e_meter_reading_night" property="eMeterReadingNight" />
+		<result column="g_meter_reading" property="gMeterReading" />
+		<result column="bill_date" property="billDate" />
+		<result column="days" property="days" />
+		<result column="due" property="due" />
+		<result column="status" property="status" />
+
+	</resultMap>
+
+	<select id="getLastActiveMeterPrice" resultMap="MeterResultMap">
+		select * from
+		meter m where m.is_active LIKE('Y')
+	</select>
+
+	<insert id="addMeterPrice" parameterType="Meter">
+		<selectKey keyProperty="id" resultType="Long" order="BEFORE">
+			select
+			nextval('METER_SEQ')
+		</selectKey>
+		INSERT INTO
+		meter
+		(id,e_meter_price_day,e_meter_price_night,g_meter_price,submission_date,standing_charge,is_active)
+		VALUES(#{id},
+		#{eMeterPriceDay},#{eMeterPriceNight},#{gMeterPrice},#{submissionDate},#{standingCharge},#{isActive})
+	</insert>
+
+	<update id="updateMeterPrice" parameterType="Meter">
+		UPDATE
+		meter SET
+		is_active = 'N'
+		WHERE id=#{id}
+	</update>
+
+	<select id="getAllMeterReading"
+		resultMap="MeterReadingResultMap">
+		select * from meter_reading;
+	</select>
+	
+	<select id="getAllBills"
+		resultMap="BillResultMap">
+		select * from bill;
+	</select>
+
+	<select id="meterReadings" resultMap="MeterReadingResultMap">
+		select submission_date,
+		SUM(e_meter_reading_day) as e_meter_reading_day, SUM(e_meter_reading_night) as
+		e_meter_reading_night, SUM(g_meter_reading) as g_meter_reading
+		from meter_reading GROUP BY submission_date
+	</select>
+
+	<select id="getUserCount" resultType="Long">
+		select count(email) from
+		customer;
+	</select>
+
+	<select id="getMeterReadingCount" resultType="Long">
+		select count(email)
+		from meter_reading;
+	</select>
+	
+	<select id="getBillCount" resultType="Long">
+		select count(email)
+		from bill;
+	</select>
+
+</mapper>

@@ -14,19 +14,19 @@ public class AuthenticationController {
 
   private final AuthenticationService service;
 
-  @PostMapping("/register")
-  public ResponseEntity<AuthenticationResponse> register(
-      @RequestBody RegisterRequest request
-  ) {
-	  System.out.println("request "+request);
-    return ResponseEntity.ok(service.register(request));
-  }
-  @PostMapping("/authenticate")
-  public ResponseEntity<AuthenticationResponse> authenticate(
-      @RequestBody AuthenticationRequest request
-  ) {
-    return ResponseEntity.ok(service.authenticate(request));
-  }
+//  @PostMapping("/register")
+//  public ResponseEntity<AuthenticationResponse> register(
+//      @RequestBody RegisterRequest request
+//  ) {
+//	  System.out.println("request "+request);
+//    return ResponseEntity.ok(service.register(request));
+//  }
+//  @PostMapping("/authenticate")
+//  public ResponseEntity<AuthenticationResponse> authenticate(
+//      @RequestBody AuthenticationRequest request
+//  ) {
+//    return ResponseEntity.ok(service.authenticate(request));
+//  }
 
 
 }
