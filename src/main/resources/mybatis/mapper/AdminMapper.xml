@@ -71,7 +71,7 @@
 	
 	<select id="getAllBills"
 		resultMap="BillResultMap">
-		select * from bill;
+		select * from bill ORDER BY bill_date DESC ;
 	</select>
 
 	<select id="meterReadings" resultMap="MeterReadingResultMap">
