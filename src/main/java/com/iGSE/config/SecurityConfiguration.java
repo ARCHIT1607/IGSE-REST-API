@@ -49,7 +49,7 @@ public class SecurityConfiguration {
 	CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
 
-		configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+		configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000,https://igse-ui-production.up.railway.app"));
 		configuration.setAllowedHeaders(List.of("*"));
 		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "OPTIONS"));
 		configuration.setAllowCredentials(true);
