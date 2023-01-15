@@ -49,7 +49,12 @@ public class AdminService {
 	public List<MeterReading> meterReadings() {
 		return adminMapper.meterReadings();
 	}
+	
+	public List<Bill> billStatistics() {
+		return adminMapper.billStatistics();
+	}
 
+	
 	public HashMap<String, Object> getAllCounts() {
 		HashMap<String, Object> getAllCounts = new HashMap<String, Object>();
 		getAllCounts.put("userCount",adminMapper.getUserCount());

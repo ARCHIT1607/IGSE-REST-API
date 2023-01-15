@@ -62,6 +62,16 @@ public class AdminController {
 		}
 	}
 	
+	@GetMapping("admin/billStatistics")
+	public ResponseEntity<Object> billStatistics(){
+		try {
+				return new ResponseEntity<Object>(adminService.billStatistics(), HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<Object>(e.getMessage(),HttpStatus.BAD_REQUEST);
+		}
+	}
+	
 	@GetMapping("admin/getAllCounts")
 	public ResponseEntity<Object> getAllCounts(){
 		try {

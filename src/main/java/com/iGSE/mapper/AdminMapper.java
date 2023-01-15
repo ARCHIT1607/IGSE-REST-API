@@ -25,7 +25,7 @@ public interface AdminMapper {
 	long getBillCount();
 	
 	List<MeterReading> meterReadings();
-
+	List<Bill> billStatistics();
 	
 
 }

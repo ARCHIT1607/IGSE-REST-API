@@ -80,6 +80,14 @@
 		e_meter_reading_night, SUM(g_meter_reading) as g_meter_reading
 		from meter_reading GROUP BY submission_date
 	</select>
+	
+	<select id="billStatistics" resultType="HashMap">
+		select bill_date,
+		SUM(due) as amount, SUM(e_meter_reading_day) as
+		e_meter_reading_day, SUM(e_meter_reading_night) as
+		e_meter_reading_night, SUM(g_meter_reading) as g_meter_reading
+		from bill GROUP BY bill_date
+	</select>
 
 	<select id="getUserCount" resultType="Long">
 		select count(email) from
