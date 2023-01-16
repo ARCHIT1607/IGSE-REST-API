@@ -109,8 +109,17 @@ public class CustomerController {
 						HttpStatus.OK);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			HashMap<Object,Object> map = new HashMap<>();
+			if(e.getMessage().equals("Meter reading already submitted from this month")) {
+				map.put("errorMsg", e.getMessage());
+				map.put("errorType", "month_submitted_found");
+			}else if(e.getMessage().equals("The new meter reading is less than a previous reading")) {
+				map.put("errorMsg", e.getMessage());
+				map.put("errorType", "meter_reading_less_than_previous");
+			}else{
+				map.put("errorMsg", e.getMessage());
+			}
+			return new ResponseEntity<Object>(map, HttpStatus.BAD_REQUEST);
 		}
 	}
 

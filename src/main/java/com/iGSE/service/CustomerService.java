@@ -112,7 +112,7 @@ public class CustomerService {
 						meterReadings.get(0).geteMeterReadingNight()> mReading.geteMeterReadingNight() ||
 						meterReadings.get(0).getgMeterReading()> mReading.getgMeterReading())
 				{
-					throw new Exception("Reading submitted is not correct");
+					throw new Exception("The new meter reading is less than a previous reading");
 				}
 				mReading.setEmail(email);
 				success = cusMapper.submitMeterReading(mReading);
