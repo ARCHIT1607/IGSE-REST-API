@@ -1,6 +1,5 @@
 package com.iGSE.service;
 
-import java.io.IOException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,15 +19,23 @@ public class QRService {
 	@Autowired
 	ImageRepository imageRepository;
 
-	public Object uplaodQr(MultipartFile file, String evc) throws IOException {
-		EVC img = new EVC();
-    	img.setImage(ImageUtility.compressImage(file.getBytes()));
-    	img.setName(file.getOriginalFilename());
-    	img.setType(file.getContentType());
-    	img.setEvc(evc);
-        imageRepository.save(img);
-		return new ImageUploadResponse("Image uploaded successfully: " +
-              file.getOriginalFilename());
+	public Object uplaodQr(MultipartFile file, String evc) throws Exception {
+		try {
+			EVC existingEvc = imageRepository.findByEvc(evc);
+			if(existingEvc.getId()!=null) {
+				throw new Exception("EVC with similar context exists. Try with different one");
+			}
+			EVC img = new EVC();
+	    	img.setImage(ImageUtility.compressImage(file.getBytes()));
+	    	img.setName(file.getOriginalFilename());
+	    	img.setType(file.getContentType());
+	    	img.setEvc(evc);
+	        imageRepository.save(img);
+			return new ImageUploadResponse("Image uploaded successfully: " +
+	              file.getOriginalFilename());
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
 	}
 
 	public EVC getQrDetails(String evc) throws Exception {

@@ -112,6 +112,16 @@ public class AdminController {
 		}
 	}
 	
+	@GetMapping("/admin/energyStatistic")
+	public ResponseEntity<Object> energyStatistic() {
+		try {
+			return new ResponseEntity<Object>(adminService.energyStatistic(), HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
+	
 	
 
 }

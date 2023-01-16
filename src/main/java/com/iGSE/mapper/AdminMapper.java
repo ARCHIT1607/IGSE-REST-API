@@ -1,6 +1,7 @@
 package com.iGSE.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -26,5 +27,9 @@ public interface AdminMapper {
 	
 	List<MeterReading> meterReadings();
 	List<Bill> billStatistics();
+
+	Bill getLatestBill(Map<Object,Object> data);
+	
+	List<Map<Object,Object>> getMaxDates();
 
 }

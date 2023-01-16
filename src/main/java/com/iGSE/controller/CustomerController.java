@@ -1,6 +1,7 @@
 package com.iGSE.controller;
 
 import java.security.Principal;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,7 +41,7 @@ public class CustomerController {
 		try {
 			Customer user = cusService.findByEmail(cus.getEmail());
 			EVC qr = qrService.getQrDetails(evc);
-			System.out.println("user " + user);
+			
 			if (qr.isExpired() == true) {
 				throw new Exception("EVC has expired, Try with another one");
 			}
@@ -51,8 +51,20 @@ public class CustomerController {
 			cus.setPassword(passwordEncode.encode(cus.getPassword()));
 			return new ResponseEntity<Object>(cusService.register(cus, evc), HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			HashMap<Object, Object> map = new HashMap<>();
+			if(e.getMessage().equals("EVC has expired, Try with another one")) {
+				map.put("errorMsg", e.getMessage());
+				map.put("errorType", "evc_expired");
+			}else if(e.getMessage().equals("user already exists")) {
+				map.put("errorMsg", e.getMessage());
+				map.put("errorType", "user_exists");
+			}else if(e.getMessage().equals("EVC is not present")) {
+				map.put("errorMsg", e.getMessage());
+				map.put("errorType", "evc_not_present");
+			}else {
+				map.put("errorMsg", e.getMessage());
+			}
+			return new ResponseEntity<Object>(map, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -69,11 +81,21 @@ public class CustomerController {
 
 				return new ResponseEntity<Object>(cusService.authenticate(user), HttpStatus.OK);
 			} else {
-				return new ResponseEntity<Object>("Password is incorrect", HttpStatus.UNAUTHORIZED);
+				HashMap<Object,Object> map = new HashMap<>();
+				map.put("errorMsg", "Password is incorrect");
+				map.put("errorType", "password_not_found");
+				return new ResponseEntity<Object>(map, HttpStatus.UNAUTHORIZED);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			HashMap<Object,Object> map = new HashMap<>();
+			
+			if(e.getMessage().equals("User doesn't Exist")) {
+				map.put("errorMsg", e.getMessage());
+				map.put("errorType", "user_not_found");
+			}else {
+				map.put("errorMsg", e.getMessage());
+			}
+			return new ResponseEntity<Object>(map, HttpStatus.BAD_REQUEST);
 		}
 	}
 

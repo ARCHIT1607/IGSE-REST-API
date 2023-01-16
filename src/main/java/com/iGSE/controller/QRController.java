@@ -1,6 +1,7 @@
 package com.iGSE.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,12 +26,23 @@ public class QRController {
 
 	@PostMapping("/upload/image")
 	public ResponseEntity<Object> uplaodQr(@RequestParam("image") MultipartFile file, @RequestParam("evc") String evc)
-			throws IOException {
+			throws Exception {
+		try {
+			Object qr = qrService.uplaodQr(file, evc);
+			return new ResponseEntity<Object>(qr, HttpStatus.OK);
+		} catch (Exception e) {
 
-		return new ResponseEntity<Object>(qrService.uplaodQr(file, evc), HttpStatus.OK);
-//        return ResponseEntity.status(HttpStatus.OK)
-//                .body(new ImageUploadResponse("Image uploaded successfully: " +
-//                        file.getOriginalFilename()));
+			HashMap<Object, Object> map = new HashMap<>();
+			if (e.getMessage().equals("EVC with similar context exists. Try with different one")) {
+				map.put("errorMsg", e.getMessage());
+				map.put("errorType", "admin_evc_exists");
+			} else {
+				map.put("errorMsg", e.getMessage());
+			}
+			return new ResponseEntity<Object>(map, HttpStatus.INTERNAL_SERVER_ERROR);
+
+		}
+		
 	}
 
 	@GetMapping(path = { "/get/image/info/{evc}" })

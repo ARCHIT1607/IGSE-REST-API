@@ -8,14 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.iGSE.auth.AuthenticationRequest;
 import com.iGSE.auth.AuthenticationResponse;
-import com.iGSE.auth.RegisterRequest;
 import com.iGSE.config.JwtService;
 import com.iGSE.entity.Bill;
 import com.iGSE.entity.Customer;
@@ -24,9 +19,6 @@ import com.iGSE.entity.MeterReading;
 import com.iGSE.mapper.CustomerMapper;
 import com.iGSE.repository.CustomerRepository;
 import com.iGSE.repository.ImageRepository;
-import com.iGSE.user.Role;
-import com.iGSE.user.User;
-import com.iGSE.user.UserRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -43,18 +35,6 @@ public class CustomerService {
 
 	@Autowired
 	private JwtService jwtService;
-	@Autowired
-	private AuthenticationManager authenticationManager;
-
-//	public AuthenticationResponse register(RegisterRequest request) {
-//		var user = User.builder().firstname(request.getFirstname()).lastname(request.getLastname())
-//				.email(request.getEmail()).password(passwordEncoder.encode(request.getPassword())).role(Role.USER)
-//				.build();
-//
-//		repository.save(user);
-//		var jwtToken = jwtService.generateToken(user);
-//		return AuthenticationResponse.builder().token(jwtToken).build();
-//	}
 
 	public AuthenticationResponse authenticate(Customer request) throws Exception {
 //		authenticationManager
@@ -102,7 +82,7 @@ public class CustomerService {
 						meterReadings.get(0).geteMeterReadingNight()> mReading.geteMeterReadingNight() ||
 						meterReadings.get(0).getgMeterReading()> mReading.getgMeterReading())
 				{
-					throw new Exception("Meter Reading should be higher than previous month");
+					throw new Exception("The new meter reading is less than a previous reading");
 				}
 			}
 			if(meterReadings.size()>0) {

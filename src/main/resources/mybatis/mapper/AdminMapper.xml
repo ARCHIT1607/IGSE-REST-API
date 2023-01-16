@@ -91,17 +91,24 @@
 
 	<select id="getUserCount" resultType="Long">
 		select count(email) from
-		customer;
+		customer
 	</select>
 
 	<select id="getMeterReadingCount" resultType="Long">
 		select count(email)
-		from meter_reading;
+		from meter_reading
 	</select>
 	
 	<select id="getBillCount" resultType="Long">
 		select count(email)
-		from bill;
+		from bill
 	</select>
-
+	
+	<select id="getMaxDates" resultType="HashMap">
+		select max(bill_date) as date,email from bill GROUP BY email
+	</select>
+	
+	<select id="getLatestBill" resultMap="BillResultMap">
+		select * from bill where bill_date = #{date} AND email = #{email}
+	</select>
 </mapper>
