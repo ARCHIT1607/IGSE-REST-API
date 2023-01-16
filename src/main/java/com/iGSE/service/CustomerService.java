@@ -94,11 +94,15 @@ public class CustomerService {
 			if(meterReadings.size()==0) {
 				success = cusMapper.submitMeterReading(mReading);
 			}else{
-				if(meterReadings.get(0).geteMeterReadingDay()> mReading.geteMeterReadingDay() ||
+				if(findDifference(meterReadings.get(0).getSubmissionDate(), mReading.getSubmissionDate())>30) {
+					throw new Exception("Meter reading already submitted from this month");
+				}
+				if(
+						meterReadings.get(0).geteMeterReadingDay()> mReading.geteMeterReadingDay() ||
 						meterReadings.get(0).geteMeterReadingNight()> mReading.geteMeterReadingNight() ||
 						meterReadings.get(0).getgMeterReading()> mReading.getgMeterReading())
 				{
-					throw new Exception("Incorrect reading entered");
+					throw new Exception("Meter Reading should be higher than previous month");
 				}
 			}
 			if(meterReadings.size()>0) {
@@ -215,10 +219,6 @@ public class CustomerService {
 			throw new Exception("Please fill exisitng bill first");
 		}
 		return "Bill Paid";
-	}
-
-	public Meter getMeterPrice() {
-		return cusMapper.getLastActiveMeterPrice();
 	}
 
 }

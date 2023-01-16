@@ -102,6 +102,16 @@ public class AdminController {
 		}
 	}
 	
+	@GetMapping("/admin/getMeterPrice")
+	public ResponseEntity<Object> getMeterReading() {
+		try {
+			return new ResponseEntity<Object>(adminService.getMeterPrice(), HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
+	
 	
 
 }

@@ -167,29 +167,7 @@ public class CustomerController {
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
-
-//	@GetMapping("/customer/findDifference")
-//	public ResponseEntity<Object> findDifference(Principal authenicatedUser) {
-//		try {
-//			if (authenicatedUser.getName() == null) {
-//				throw new Exception("Email is null");
-//			} else {
-//				return new ResponseEntity<Object>(cusService.findDifference(authenicatedUser.getName()), HttpStatus.OK);
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
-//		}
-//	}
-
-	@GetMapping("/customer/getMeterPrice")
-	public ResponseEntity<Object> getMeterReading() {
-		try {
-			return new ResponseEntity<Object>(cusService.getMeterPrice(), HttpStatus.OK);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
-		}
-	}
+	
+	
 
 }

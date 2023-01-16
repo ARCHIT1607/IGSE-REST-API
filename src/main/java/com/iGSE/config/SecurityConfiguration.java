@@ -33,7 +33,8 @@ public class SecurityConfiguration {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		
 		http.csrf().disable().cors().and().authorizeHttpRequests().requestMatchers("/admin/**").hasAnyRole("ADMIN")
-		.requestMatchers("/qr/**").hasAnyRole("ADMIN").requestMatchers("/customer/**").hasAnyRole("USER").requestMatchers("/auth/**").permitAll()
+		.requestMatchers("/customer/**").hasAnyRole("USER").requestMatchers("/auth/**").permitAll()
+		.requestMatchers("/qr/**").permitAll()
 		.requestMatchers(HttpMethod.OPTIONS).permitAll()
 		.anyRequest().authenticated().and()
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()

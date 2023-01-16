@@ -62,5 +62,9 @@ public class AdminService {
 		getAllCounts.put("billCount",adminMapper.getBillCount());
 		return getAllCounts;
 	}
+	
+	public Meter getMeterPrice() {
+		return adminMapper.getLastActiveMeterPrice();
+	}
 
 }

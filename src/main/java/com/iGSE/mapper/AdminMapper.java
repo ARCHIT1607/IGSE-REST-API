@@ -26,6 +26,5 @@ public interface AdminMapper {
 	
 	List<MeterReading> meterReadings();
 	List<Bill> billStatistics();
-	
 
 }
