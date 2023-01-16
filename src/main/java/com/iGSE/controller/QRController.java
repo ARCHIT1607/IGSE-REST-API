@@ -31,7 +31,7 @@ public class QRController {
 			Object qr = qrService.uplaodQr(file, evc);
 			return new ResponseEntity<Object>(qr, HttpStatus.OK);
 		} catch (Exception e) {
-
+e.printStackTrace();
 			HashMap<Object, Object> map = new HashMap<>();
 			if (e.getMessage().equals("EVC with similar context exists. Try with different one")) {
 				map.put("errorMsg", e.getMessage());

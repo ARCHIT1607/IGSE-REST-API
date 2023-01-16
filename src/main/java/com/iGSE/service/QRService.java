@@ -22,7 +22,7 @@ public class QRService {
 	public Object uplaodQr(MultipartFile file, String evc) throws Exception {
 		try {
 			EVC existingEvc = imageRepository.findByEvc(evc);
-			if(existingEvc.getId()!=null) {
+			if(existingEvc!=null) {
 				throw new Exception("EVC with similar context exists. Try with different one");
 			}
 			EVC img = new EVC();
